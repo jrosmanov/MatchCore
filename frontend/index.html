@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="az" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MatchCore — Oyunçu Platforması</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@700;800&family=JetBrains+Mono:wght@500&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="navigate('home')">MatchCore</div>
+  <div class="nav-links">
+    <a class="nav-link" data-page="home" onclick="navigate('home')">Home</a>
+    <a class="nav-link" data-page="players" onclick="navigate('players')">Matches</a>
+    <a class="nav-link" data-page="events" onclick="navigate('events')">Events</a>
+    <a class="nav-link" data-page="profile" onclick="navigate('profile')">Profile</a>
+  </div>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="showToast('Bildiriş yoxdur')">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <div class="nav-avatar" onclick="navigate('profile')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PlayerOne" alt="Avatar" id="nav-avatar-img" />
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ PAGE 1: HOME ═══════════════════ -->
+<section class="page" id="page-home">
+  <canvas id="shader-canvas"></canvas>
+  <div class="home-overlay"></div>
+  <div class="home-content">
+    <div class="home-badge">
+      <span class="material-symbols-outlined" style="font-size:14px">bolt</span>
+      v2.0 — Next-Gen Matchmaking
+    </div>
+    <h1 class="home-h1">Doğru oyunçunu,<br/><span>doğru vaxtda</span> tap</h1>
+    <p class="home-sub">Növbəti match-inizi tapmaq üçün ən güclü oyunçu uyğunlaşdırma platforması. Skill, latency, playstyle — hamısı bir yerdə.</p>
+    <div class="home-ctas">
+      <button class="btn-primary" onclick="navigate('setup')">
+        Başla <span class="material-symbols-outlined">arrow_forward</span>
+      </button>
+      <button class="btn-outline" onclick="navigate('players')">Oyunçulara bax</button>
+    </div>
+    <div class="home-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="stat-players">12K+</div>
+        <div class="stat-label">Aktiv oyunçu</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-events">340</div>
+        <div class="stat-label">Bu gün event</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-ping">98ms</div>
+        <div class="stat-label">Orta ping</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Match reytinqi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 2: FIND PLAYERS ═══════════════════ -->
+<section class="page" id="page-players">
+  <div class="players-layout">
+    <aside class="filter-sidebar">
+      <div>
+        <div class="filter-title">Filterlər</div>
+        <div class="filter-group" style="margin-bottom:18px;">
+          <label class="input-label">Oyun</label>
+          <select class="input" id="filter-game" onchange="applyFilters()">
+            <option value="">Hamısı</option>
+            <option>Valorant</option>
+            <option>CS2</option>
+            <option>Apex Legends</option>
+            <option>Minecraft</option>
+            <option>Elden Ring</option>
+            <option>League of Legends</option>
+            <option>Fortnite</option>
+            <option>Dota 2</option>
+          </select>
+        </div>
+        <div class="filter-group" style="margin-bottom:18px;">
+          <label class="input-label">Region</label>
+          <div class="filter-chips" id="filter-regions">
+            <button class="filter-chip active" data-val="" onclick="selectChip(this,'filter-regions',applyFilters)">Hamısı</button>
+            <button class="filter-chip" data-val="EUW" onclick="selectChip(this,'filter-regions',applyFilters)">EUW</button>
+            <button class="filter-chip" data-val="NA" onclick="selectChip(this,'filter-regions',applyFilters)">NA</button>
+            <button class="filter-chip" data-val="KR" onclick="selectChip(this,'filter-regions',applyFilters)">KR</button>
+            <button class="filter-chip" data-val="MENA" onclick="selectChip(this,'filter-regions',applyFilters)">MENA</button>
+          </div>
+        </div>
+        <div class="filter-group" style="margin-bottom:18px;">
+          <label class="input-label">Playstyle</label>
+          <div class="filter-chips" id="filter-playstyle">
+            <button class="filter-chip active" data-val="" onclick="selectChip(this,'filter-playstyle',applyFilters)">Hamısı</button>
+            <button class="filter-chip" data-val="Competitive" onclick="selectChip(this,'filter-playstyle',applyFilters)">Competitive</button>
+            <button class="filter-chip" data-val="Casual" onclick="selectChip(this,'filter-playstyle',applyFilters)">Casual</button>
+            <button class="filter-chip" data-val="Hardcore" onclick="selectChip(this,'filter-playstyle',applyFilters)">Hardcore</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label class="input-label">Online Statusu</label>
+          <div class="filter-chips" id="filter-online">
+            <button class="filter-chip active" data-val="" onclick="selectChip(this,'filter-online',applyFilters)">Hamısı</button>
+            <button class="filter-chip" data-val="true" onclick="selectChip(this,'filter-online',applyFilters)">Online</button>
+            <button class="filter-chip" data-val="false" onclick="selectChip(this,'filter-online',applyFilters)">Offline</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-outline" style="margin-top:auto;width:100%" onclick="resetFilters()">Sıfırla</button>
+    </aside>
+
+    <div class="swipe-area">
+      <div id="swipe-stack">
+        <div class="swipe-card behind" id="card-behind"></div>
+        <div class="swipe-card" id="swipe-main">
+          <div class="swipe-card-img-placeholder" id="card-img-wrap">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <div class="swipe-img-overlay"></div>
+          <div class="swipe-labels" id="card-labels"></div>
+          <div class="swipe-info-overlay" id="card-info-overlay"></div>
+          <div class="swipe-body" id="card-body"></div>
+        </div>
+      </div>
+      <div class="swipe-actions">
+        <button class="action-btn action-skip" onclick="swipeAction('skip')">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <button class="action-btn action-like" onclick="swipeAction('like')">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;color:#003642">favorite</span>
+        </button>
+        <button class="action-btn action-chat" onclick="showToast('Chat tezliklə gəlir! 🎮')">
+          <span class="material-symbols-outlined">chat</span>
+        </button>
+      </div>
+      <div class="swipe-hint">← keç &nbsp;|&nbsp; match et →</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 3: EVENTS ═══════════════════ -->
+<section class="page" id="page-events">
+  <div class="container">
+    <div class="events-header">
+      <div>
+        <h2 class="font-sora" style="font-size:26px;font-weight:800">Gaming Events</h2>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:4px">Mövcud turnir və sessiyalara qoşul</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="filter-chips" id="event-filter-chips">
+          <button class="filter-chip active" data-tag="" onclick="filterEvents(this)">Hamısı</button>
+          <button class="filter-chip" data-tag="TOURNAMENT" onclick="filterEvents(this)">Tournament</button>
+          <button class="filter-chip" data-tag="CASUAL" onclick="filterEvents(this)">Casual</button>
+          <button class="filter-chip" data-tag="RANKED" onclick="filterEvents(this)">Ranked</button>
+        </div>
+        <button class="btn-primary" onclick="document.getElementById('modal-create').classList.add('open')">
+          <span class="material-symbols-outlined">add</span> Event Yarat
+        </button>
+      </div>
+    </div>
+    <div class="events-grid" id="events-grid">
+      <div class="loading-text">Yüklənir...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 4: PROFILE ═══════════════════ -->
+<section class="page" id="page-profile">
+  <div class="container">
+    <div class="profile-hero">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PlayerOne" alt="Avatar" id="profile-avatar-img"/>
+        </div>
+        <div class="online-ring"></div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-username" id="profile-username">Player_One</div>
+        <div class="profile-level font-mono" id="profile-level">LVL 32 · Competitive</div>
+        <div class="profile-stats">
+          <div><div class="pstat-val" id="pstat-matches">128</div><div class="pstat-lbl">Match</div></div>
+          <div><div class="pstat-val" id="pstat-hours">340h</div><div class="pstat-lbl">Saatlar</div></div>
+          <div><div class="pstat-val" id="pstat-events">14</div><div class="pstat-lbl">Event</div></div>
+          <div><div class="pstat-val" id="pstat-winrate">68%</div><div class="pstat-lbl">Qalibiyyət</div></div>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;flex-direction:column;gap:10px;align-items:flex-end">
+        <button class="btn-outline" onclick="navigate('edit')">
+          <span class="material-symbols-outlined">edit</span> Redaktə et
+        </button>
+        <button class="btn-ghost" onclick="shareProfile()">
+          <span class="material-symbols-outlined">share</span> Paylaş
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Platformalar</div>
+      <div class="platforms-row" id="profile-platforms">
+        <div class="platform-badge">PC</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Oyunlar</div>
+      <div class="games-grid" id="profile-games"></div>
+    </div>
+
+    <div class="profile-section" style="padding-bottom:32px">
+      <div class="profile-section-title">Nailiyyətlər</div>
+      <div class="achievements-row">
+        <div class="badge-item"><span class="material-symbols-outlined">military_tech</span>Top 10% Player</div>
+        <div class="badge-item"><span class="material-symbols-outlined">verified</span>Verified Gamer</div>
+        <div class="badge-item"><span class="material-symbols-outlined">groups</span>128 Matches</div>
+        <div class="badge-item"><span class="material-symbols-outlined">event</span>Event Host</div>
+        <div class="badge-item"><span class="material-symbols-outlined">star</span>Rising Star</div>
+      </div>
+    </div>
+
+    <div class="profile-section" style="padding-bottom:40px">
+      <div class="profile-section-title">Son Aktivlik</div>
+      <div class="activity-list" id="profile-activity">
+        <div class="activity-item">
+          <span class="material-symbols-outlined activity-icon">sports_esports</span>
+          <div><div class="activity-title">Valorant — Competitive Win</div><div class="activity-time">2 saat əvvəl</div></div>
+        </div>
+        <div class="activity-item">
+          <span class="material-symbols-outlined activity-icon">event</span>
+          <div><div class="activity-title">CS2 Ranked Night-a qoşuldu</div><div class="activity-time">Dünən</div></div>
+        </div>
+        <div class="activity-item">
+          <span class="material-symbols-outlined activity-icon">person_add</span>
+          <div><div class="activity-title">ZephyrVoid ilə match oldu</div><div class="activity-time">2 gün əvvəl</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 5: SETUP (Onboarding) ═══════════════════ -->
+<section class="page" id="page-setup">
+  <div class="setup-container">
+    <div class="setup-steps">
+      <div class="step-dot done" id="step-dot-1"></div>
+      <div class="step-dot" id="step-dot-2"></div>
+      <div class="step-dot" id="step-dot-3"></div>
+    </div>
+
+    <div class="setup-step active" id="setup-step-1">
+      <div class="setup-title">Hesab yarat</div>
+      <div class="setup-sub">Platformanı seç</div>
+      <div class="input-group">
+        <label class="input-label">İstifadəçi adı</label>
+        <input class="input" type="text" placeholder="GamerTag123" id="setup-username"/>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Email</label>
+        <input class="input" type="email" placeholder="oyuncu@matchcore.gg" id="setup-email"/>
+      </div>
+      <div>
+        <label class="input-label" style="margin-bottom:10px;display:block">Platform</label>
+        <div class="platform-cards">
+          <div class="platform-card selected" onclick="togglePlatformCard(this)">
+            <span class="material-symbols-outlined">computer</span>PC
+          </div>
+          <div class="platform-card" onclick="togglePlatformCard(this)">
+            <span class="material-symbols-outlined">sports_esports</span>PS5
+          </div>
+          <div class="platform-card" onclick="togglePlatformCard(this)">
+            <span class="material-symbols-outlined">videogame_asset</span>Xbox
+          </div>
+          <div class="platform-card" onclick="togglePlatformCard(this)">
+            <span class="material-symbols-outlined">phone_iphone</span>Mobile
+          </div>
+          <div class="platform-card" onclick="togglePlatformCard(this)">
+            <span class="material-symbols-outlined">sports_handball</span>Nintendo
+          </div>
+          <div class="platform-card" onclick="togglePlatformCard(this)">
+            <span class="material-symbols-outlined">vr_and_hmd</span>VR
+          </div>
+        </div>
+      </div>
+      <div class="setup-nav">
+        <span></span>
+        <button class="btn-primary" onclick="setupNext(2)">Növbəti <span class="material-symbols-outlined">arrow_forward</span></button>
+      </div>
+    </div>
+
+    <div class="setup-step" id="setup-step-2">
+      <div class="setup-title">Oyunlarını seç</div>
+      <div class="setup-sub">Ən çox oynadıqlarını qeyd et</div>
+      <div class="games-select-grid">
+        <div class="game-select-card selected" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">swords</span>Valorant
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">target</span>CS2
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">sports_soccer</span>FIFA 25
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">rocket_launch</span>Apex Legends
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">castle</span>Minecraft
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">shield_moon</span>Elden Ring
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">auto_awesome</span>Fortnite
+        </div>
+        <div class="game-select-card" onclick="this.classList.toggle('selected')">
+          <span class="material-symbols-outlined">electric_bolt</span>League of Legends
+        </div>
+      </div>
+      <div class="setup-nav">
+        <button class="btn-ghost" onclick="setupNext(1)">← Geri</button>
+        <button class="btn-primary" onclick="setupNext(3)">Növbəti <span class="material-symbols-outlined">arrow_forward</span></button>
+      </div>
+    </div>
+
+    <div class="setup-step" id="setup-step-3">
+      <div class="setup-title">Nə vaxt oynayırsan?</div>
+      <div class="setup-sub">Günlük schedule-ni seç</div>
+      <div>
+        <label class="input-label" style="margin-bottom:10px;display:block">Günlər</label>
+        <div class="schedule-grid">
+          <div class="day-btn" onclick="this.classList.toggle('active')">B.e</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">Ç.a</div>
+          <div class="day-btn" onclick="this.classList.toggle('active')">Ç</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">C.a</div>
+          <div class="day-btn" onclick="this.classList.toggle('active')">C</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">Ş</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">B</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Playstyle</label>
+        <select class="input" id="setup-playstyle">
+          <option>Competitive</option>
+          <option>Casual</option>
+          <option>Hardcore</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Region</label>
+        <select class="input" id="setup-region">
+          <option>EUW</option>
+          <option>NA</option>
+          <option>KR</option>
+          <option>OCE</option>
+          <option>MENA</option>
+        </select>
+      </div>
+      <div class="setup-nav">
+        <button class="btn-ghost" onclick="setupNext(2)">← Geri</button>
+        <button class="btn-primary" onclick="finishSetup()">
+          Başla <span class="material-symbols-outlined">check</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 6: EDIT PROFILE ═══════════════════ -->
+<section class="page" id="page-edit">
+  <div class="edit-container">
+    <h2 class="edit-title">Profili Redaktə Et</h2>
+    <div class="edit-avatar-section">
+      <div class="edit-avatar">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PlayerOne" alt="Avatar" id="edit-avatar-img"/>
+      </div>
+      <div>
+        <button class="btn-outline" onclick="triggerAvatarUpload()">
+          <span class="material-symbols-outlined">upload</span> Şəkil yüklə
+        </button>
+        <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="previewAvatar(event)"/>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:6px;font-family:'JetBrains Mono',monospace">PNG, JPG · max 2MB</p>
+      </div>
+    </div>
+    <div class="edit-form">
+      <div class="edit-row">
+        <div class="input-group">
+          <label class="input-label">İstifadəçi adı</label>
+          <input class="input" type="text" value="Player_One" id="edit-username"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input class="input" type="email" value="player@matchcore.gg" id="edit-email"/>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div class="input-group">
+          <label class="input-label">Region</label>
+          <select class="input" id="edit-region">
+            <option selected>EUW</option><option>NA</option><option>KR</option><option>MENA</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Dil</label>
+          <select class="input" id="edit-language">
+            <option selected>Azerbaijani</option><option>English</option><option>Russian</option>
+          </select>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div class="input-group">
+          <label class="input-label">Playstyle</label>
+          <select class="input" id="edit-playstyle">
+            <option selected>Competitive</option><option>Casual</option><option>Hardcore</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Discord Tag</label>
+          <input class="input" type="text" placeholder="Username#1234" id="edit-discord"/>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Bio</label>
+        <textarea class="input" rows="3" placeholder="Özün haqqında qısa..." id="edit-bio"></textarea>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Gizlilik</label>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <label class="toggle-label">
+            <input type="checkbox" id="edit-public" checked>
+            <span class="toggle-switch"></span>
+            Profil açıqdır
+          </label>
+        </div>
+      </div>
+      <div class="edit-footer">
+        <button class="btn-ghost" onclick="navigate('profile')">Ləğv et</button>
+        <button class="btn-primary" onclick="saveProfile()">
+          <span class="material-symbols-outlined">save</span> Yadda saxla
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ BOTTOM NAV ═══════════════════ -->
+<nav id="bottom-nav">
+  <a class="bnav-item" data-page="home" onclick="navigate('home')">
+    <span class="material-symbols-outlined">home</span>Home
+  </a>
+  <a class="bnav-item" data-page="players" onclick="navigate('players')">
+    <span class="material-symbols-outlined">sports_esports</span>Match
+  </a>
+  <a class="bnav-item" data-page="events" onclick="navigate('events')">
+    <span class="material-symbols-outlined">event</span>Events
+  </a>
+  <a class="bnav-item" data-page="profile" onclick="navigate('profile')">
+    <span class="material-symbols-outlined">person</span>Profil
+  </a>
+</nav>
+
+<!-- ═══════════════════ CREATE EVENT MODAL ═══════════════════ -->
+<div class="modal-overlay" id="modal-create">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Yeni Event Yarat</h3>
+      <button class="icon-btn" onclick="document.getElementById('modal-create').classList.remove('open')">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Event adı</label>
+      <input class="input" type="text" placeholder="Valorant 5v5 Tournament" id="new-event-title"/>
+    </div>
+    <div class="modal-grid">
+      <div class="input-group">
+        <label class="input-label">Oyun</label>
+        <input class="input" type="text" placeholder="Valorant" id="new-event-game"/>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Slot sayı</label>
+        <input class="input" type="number" value="10" min="2" max="100" id="new-event-slots"/>
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="input-group">
+        <label class="input-label">Tarix</label>
+        <input class="input" type="date" id="new-event-date"/>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Saat</label>
+        <input class="input" type="time" id="new-event-time" value="20:00"/>
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="input-group">
+        <label class="input-label">Region</label>
+        <select class="input" id="new-event-region">
+          <option>Global</option><option>EUW</option><option>NA</option><option>KR</option><option>MENA</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Növ</label>
+        <select class="input" id="new-event-tag">
+          <option value="TOURNAMENT">Tournament</option>
+          <option value="CASUAL">Casual</option>
+          <option value="RANKED">Ranked</option>
+          <option value="HARDCORE">Hardcore</option>
+          <option value="CUSTOM">Custom</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Mükafat (ixtiyari)</label>
+      <input class="input" type="text" placeholder="$500 və ya boş burax" id="new-event-prize"/>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn-ghost" onclick="document.getElementById('modal-create').classList.remove('open')">Ləğv et</button>
+      <button class="btn-primary" onclick="createEvent()">
+        <span class="material-symbols-outlined">add</span> Yarat
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TOAST ═══════════════════ -->
+<div id="toast"></div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script src="js/shader.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
