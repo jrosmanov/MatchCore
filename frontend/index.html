@@ -329,3 +329,212 @@
         <button class="btn-primary" onclick="setupNext(3)">Növbəti <span class="material-symbols-outlined">arrow_forward</span></button>
       </div>
     </div>
+
+    <div class="setup-step" id="setup-step-3">
+      <div class="setup-title">Nə vaxt oynayırsan?</div>
+      <div class="setup-sub">Günlük schedule-ni seç</div>
+      <div>
+        <label class="input-label" style="margin-bottom:10px;display:block">Günlər</label>
+        <div class="schedule-grid">
+          <div class="day-btn" onclick="this.classList.toggle('active')">B.e</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">Ç.a</div>
+          <div class="day-btn" onclick="this.classList.toggle('active')">Ç</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">C.a</div>
+          <div class="day-btn" onclick="this.classList.toggle('active')">C</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">Ş</div>
+          <div class="day-btn active" onclick="this.classList.toggle('active')">B</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Playstyle</label>
+        <select class="input" id="setup-playstyle">
+          <option>Competitive</option>
+          <option>Casual</option>
+          <option>Hardcore</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Region</label>
+        <select class="input" id="setup-region">
+          <option>EUW</option>
+          <option>NA</option>
+          <option>KR</option>
+          <option>OCE</option>
+          <option>MENA</option>
+        </select>
+      </div>
+      <div class="setup-nav">
+        <button class="btn-ghost" onclick="setupNext(2)">← Geri</button>
+        <button class="btn-primary" onclick="finishSetup()">
+          Başla <span class="material-symbols-outlined">check</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 6: EDIT PROFILE ═══════════════════ -->
+<section class="page" id="page-edit">
+  <div class="edit-container">
+    <h2 class="edit-title">Profili Redaktə Et</h2>
+    <div class="edit-avatar-section">
+      <div class="edit-avatar">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PlayerOne" alt="Avatar" id="edit-avatar-img"/>
+      </div>
+      <div>
+        <button class="btn-outline" onclick="triggerAvatarUpload()">
+          <span class="material-symbols-outlined">upload</span> Şəkil yüklə
+        </button>
+        <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="previewAvatar(event)"/>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:6px;font-family:'JetBrains Mono',monospace">PNG, JPG · max 2MB</p>
+      </div>
+    </div>
+    <div class="edit-form">
+      <div class="edit-row">
+        <div class="input-group">
+          <label class="input-label">İstifadəçi adı</label>
+          <input class="input" type="text" value="Player_One" id="edit-username"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input class="input" type="email" value="player@matchcore.gg" id="edit-email"/>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div class="input-group">
+          <label class="input-label">Region</label>
+          <select class="input" id="edit-region">
+            <option selected>EUW</option><option>NA</option><option>KR</option><option>MENA</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Dil</label>
+          <select class="input" id="edit-language">
+            <option selected>Azerbaijani</option><option>English</option><option>Russian</option>
+          </select>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div class="input-group">
+          <label class="input-label">Playstyle</label>
+          <select class="input" id="edit-playstyle">
+            <option selected>Competitive</option><option>Casual</option><option>Hardcore</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Discord Tag</label>
+          <input class="input" type="text" placeholder="Username#1234" id="edit-discord"/>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Bio</label>
+        <textarea class="input" rows="3" placeholder="Özün haqqında qısa..." id="edit-bio"></textarea>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Gizlilik</label>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <label class="toggle-label">
+            <input type="checkbox" id="edit-public" checked>
+            <span class="toggle-switch"></span>
+            Profil açıqdır
+          </label>
+        </div>
+      </div>
+      <div class="edit-footer">
+        <button class="btn-ghost" onclick="navigate('profile')">Ləğv et</button>
+        <button class="btn-primary" onclick="saveProfile()">
+          <span class="material-symbols-outlined">save</span> Yadda saxla
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ BOTTOM NAV ═══════════════════ -->
+<nav id="bottom-nav">
+  <a class="bnav-item" data-page="home" onclick="navigate('home')">
+    <span class="material-symbols-outlined">home</span>Home
+  </a>
+  <a class="bnav-item" data-page="players" onclick="navigate('players')">
+    <span class="material-symbols-outlined">sports_esports</span>Match
+  </a>
+  <a class="bnav-item" data-page="events" onclick="navigate('events')">
+    <span class="material-symbols-outlined">event</span>Events
+  </a>
+  <a class="bnav-item" data-page="profile" onclick="navigate('profile')">
+    <span class="material-symbols-outlined">person</span>Profil
+  </a>
+</nav>
+
+<!-- ═══════════════════ CREATE EVENT MODAL ═══════════════════ -->
+<div class="modal-overlay" id="modal-create">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Yeni Event Yarat</h3>
+      <button class="icon-btn" onclick="document.getElementById('modal-create').classList.remove('open')">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Event adı</label>
+      <input class="input" type="text" placeholder="Valorant 5v5 Tournament" id="new-event-title"/>
+    </div>
+    <div class="modal-grid">
+      <div class="input-group">
+        <label class="input-label">Oyun</label>
+        <input class="input" type="text" placeholder="Valorant" id="new-event-game"/>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Slot sayı</label>
+        <input class="input" type="number" value="10" min="2" max="100" id="new-event-slots"/>
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="input-group">
+        <label class="input-label">Tarix</label>
+        <input class="input" type="date" id="new-event-date"/>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Saat</label>
+        <input class="input" type="time" id="new-event-time" value="20:00"/>
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="input-group">
+        <label class="input-label">Region</label>
+        <select class="input" id="new-event-region">
+          <option>Global</option><option>EUW</option><option>NA</option><option>KR</option><option>MENA</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Növ</label>
+        <select class="input" id="new-event-tag">
+          <option value="TOURNAMENT">Tournament</option>
+          <option value="CASUAL">Casual</option>
+          <option value="RANKED">Ranked</option>
+          <option value="HARDCORE">Hardcore</option>
+          <option value="CUSTOM">Custom</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Mükafat (ixtiyari)</label>
+      <input class="input" type="text" placeholder="$500 və ya boş burax" id="new-event-prize"/>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn-ghost" onclick="document.getElementById('modal-create').classList.remove('open')">Ləğv et</button>
+      <button class="btn-primary" onclick="createEvent()">
+        <span class="material-symbols-outlined">add</span> Yarat
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TOAST ═══════════════════ -->
+<div id="toast"></div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script src="js/shader.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
