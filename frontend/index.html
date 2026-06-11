@@ -10,3 +10,140 @@
 </head>
 <body>
 
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="navigate('home')">MatchCore</div>
+  <div class="nav-links">
+    <a class="nav-link" data-page="home" onclick="navigate('home')">Home</a>
+    <a class="nav-link" data-page="players" onclick="navigate('players')">Matches</a>
+    <a class="nav-link" data-page="events" onclick="navigate('events')">Events</a>
+    <a class="nav-link" data-page="profile" onclick="navigate('profile')">Profile</a>
+  </div>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="showToast('Bildiriş yoxdur')">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <div class="nav-avatar" onclick="navigate('profile')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PlayerOne" alt="Avatar" id="nav-avatar-img" />
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ PAGE 1: HOME ═══════════════════ -->
+<section class="page" id="page-home">
+  <canvas id="shader-canvas"></canvas>
+  <div class="home-overlay"></div>
+  <div class="home-content">
+    <div class="home-badge">
+      <span class="material-symbols-outlined" style="font-size:14px">bolt</span>
+      v2.0 — Next-Gen Matchmaking
+    </div>
+    <h1 class="home-h1">Doğru oyunçunu,<br/><span>doğru vaxtda</span> tap</h1>
+    <p class="home-sub">Növbəti match-inizi tapmaq üçün ən güclü oyunçu uyğunlaşdırma platforması. Skill, latency, playstyle — hamısı bir yerdə.</p>
+    <div class="home-ctas">
+      <button class="btn-primary" onclick="navigate('setup')">
+        Başla <span class="material-symbols-outlined">arrow_forward</span>
+      </button>
+      <button class="btn-outline" onclick="navigate('players')">Oyunçulara bax</button>
+    </div>
+    <div class="home-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="stat-players">12K+</div>
+        <div class="stat-label">Aktiv oyunçu</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-events">340</div>
+        <div class="stat-label">Bu gün event</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-ping">98ms</div>
+        <div class="stat-label">Orta ping</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Match reytinqi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PAGE 2: FIND PLAYERS ═══════════════════ -->
+<section class="page" id="page-players">
+  <div class="players-layout">
+    <aside class="filter-sidebar">
+      <div>
+        <div class="filter-title">Filterlər</div>
+        <div class="filter-group" style="margin-bottom:18px;">
+          <label class="input-label">Oyun</label>
+          <select class="input" id="filter-game" onchange="applyFilters()">
+            <option value="">Hamısı</option>
+            <option>Valorant</option>
+            <option>CS2</option>
+            <option>Apex Legends</option>
+            <option>Minecraft</option>
+            <option>Elden Ring</option>
+            <option>League of Legends</option>
+            <option>Fortnite</option>
+            <option>Dota 2</option>
+          </select>
+        </div>
+        <div class="filter-group" style="margin-bottom:18px;">
+          <label class="input-label">Region</label>
+          <div class="filter-chips" id="filter-regions">
+            <button class="filter-chip active" data-val="" onclick="selectChip(this,'filter-regions',applyFilters)">Hamısı</button>
+            <button class="filter-chip" data-val="EUW" onclick="selectChip(this,'filter-regions',applyFilters)">EUW</button>
+            <button class="filter-chip" data-val="NA" onclick="selectChip(this,'filter-regions',applyFilters)">NA</button>
+            <button class="filter-chip" data-val="KR" onclick="selectChip(this,'filter-regions',applyFilters)">KR</button>
+            <button class="filter-chip" data-val="MENA" onclick="selectChip(this,'filter-regions',applyFilters)">MENA</button>
+          </div>
+        </div>
+        <div class="filter-group" style="margin-bottom:18px;">
+          <label class="input-label">Playstyle</label>
+          <div class="filter-chips" id="filter-playstyle">
+            <button class="filter-chip active" data-val="" onclick="selectChip(this,'filter-playstyle',applyFilters)">Hamısı</button>
+            <button class="filter-chip" data-val="Competitive" onclick="selectChip(this,'filter-playstyle',applyFilters)">Competitive</button>
+            <button class="filter-chip" data-val="Casual" onclick="selectChip(this,'filter-playstyle',applyFilters)">Casual</button>
+            <button class="filter-chip" data-val="Hardcore" onclick="selectChip(this,'filter-playstyle',applyFilters)">Hardcore</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label class="input-label">Online Statusu</label>
+          <div class="filter-chips" id="filter-online">
+            <button class="filter-chip active" data-val="" onclick="selectChip(this,'filter-online',applyFilters)">Hamısı</button>
+            <button class="filter-chip" data-val="true" onclick="selectChip(this,'filter-online',applyFilters)">Online</button>
+            <button class="filter-chip" data-val="false" onclick="selectChip(this,'filter-online',applyFilters)">Offline</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-outline" style="margin-top:auto;width:100%" onclick="resetFilters()">Sıfırla</button>
+    </aside>
+
+    <div class="swipe-area">
+      <div id="swipe-stack">
+        <div class="swipe-card behind" id="card-behind"></div>
+        <div class="swipe-card" id="swipe-main">
+          <div class="swipe-card-img-placeholder" id="card-img-wrap">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <div class="swipe-img-overlay"></div>
+          <div class="swipe-labels" id="card-labels"></div>
+          <div class="swipe-info-overlay" id="card-info-overlay"></div>
+          <div class="swipe-body" id="card-body"></div>
+        </div>
+      </div>
+      <div class="swipe-actions">
+        <button class="action-btn action-skip" onclick="swipeAction('skip')">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <button class="action-btn action-like" onclick="swipeAction('like')">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;color:#003642">favorite</span>
+        </button>
+        <button class="action-btn action-chat" onclick="showToast('Chat tezliklə gəlir! 🎮')">
+          <span class="material-symbols-outlined">chat</span>
+        </button>
+      </div>
+      <div class="swipe-hint">← keç &nbsp;|&nbsp; match et →</div>
+    </div>
+  </div>
+</section>
+
