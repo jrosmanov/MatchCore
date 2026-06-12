@@ -1,43 +1,9 @@
-MatchCore — Gaming Platform
-
-Oyunçu matchmaking platforması. Frontend HTML/CSS/JS, backend Python Flask + SQLite.
-
-📁 Struktur
-
-Layihə strukturu belədir. matchcore qovluğunun içində iki əsas hissə var: frontend və backend. Frontend tərəfində index.html, css qovluğunda main.css, js qovluğunda isə app.js və shader.js faylları yerləşir. Backend tərəfində app.py əsas server faylıdır, requirements.txt isə lazım olan kitabxanaların siyahısını saxlayır. SQLite verilənlər bazası olan matchcore.db faylı isə server ilk dəfə işə salındıqda avtomatik yaranır.
-
-
-🚀 Quraşdırma
-
-Backend
-
-bashcd backend
-pip install -r requirements.txt
-python app.py
-# API → http://localhost:5000/api
-
-Frontend
-
-bashcd frontend
-# İstənilən statik server ilə aç:
-python -m http.server 8080
-# və ya sadəcə index.html-i brauzerə aç
-
-
-GET /api/players — Query Parametrləri
-
-?game=Valorant&region=EUW&playstyle=Competitive&online=true
-
-🎮 Səhifələr
-
-SəhifəAçıqlamaHomeLanding, WebGL shader, statistikalarMatchesSwipe (like/skip), filter sidebarEventsTurnir kartları, event yaratProfileStatistika, oyunlar, nailiyyətlərSetup3 addımlı onboardingEdit ProfileProfil redaktəsi
-
-🛠 Texnologiyalar
-
-Frontend: Vanilla HTML · CSS (Glassmorphism) · Vanilla JS · WebGL
-
-Backend: Python 3.10+ · Flask · SQLite
-
-Fontlar: Sora · Inter · JetBrains Mono · Rajdhani
-
-İkonlar: Material Symbols
+<p align="center">
+  <img src="https://img.shields.io/badge/MatchCore-v2.0-00D4FF?style=for-the-badge&logoColor=white" />
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/Flask-3.0-black?style=for-the-badge&logo=flask&logoColor=white" />
+  <img src="https://img.shields.io/badge/SQLite-embedded-003B57?style=for-the-badge&logo=sqlite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Frontend-Vanilla-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+</p>
+<h1 align="center">⚡ MatchCore</h1>
+<p align="center">Next-gen oyunçu matchmaking platforması — doğru oyunçunu, doğru vaxtda tap.</p>
