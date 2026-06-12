@@ -4,19 +4,8 @@ Oyunçu matchmaking platforması. Frontend HTML/CSS/JS, backend Python Flask + S
 
 📁 Struktur
 
-matchcore/
-├── frontend/
-│   ├── index.html        ← Bütün səhifələr (SPA)
-│   ├── css/
-│   │   └── main.css      ← Bütün stillər
-│   └── js/
-│       ├── shader.js     ← WebGL animasiya (home bg)
-│       └── app.js        ← Routing, API, UI məntiqi
-│
-└── backend/
-    ├── app.py            ← Flask REST API
-    ├── requirements.txt
-    └── matchcore.db      ← SQLite (avtomatik yaranır)
+Layihə strukturu belədir. matchcore qovluğunun içində iki əsas hissə var: frontend və backend. Frontend tərəfində index.html, css qovluğunda main.css, js qovluğunda isə app.js və shader.js faylları yerləşir. Backend tərəfində app.py əsas server faylıdır, requirements.txt isə lazım olan kitabxanaların siyahısını saxlayır. SQLite verilənlər bazası olan matchcore.db faylı isə server ilk dəfə işə salındıqda avtomatik yaranır.
+
 
 🚀 Quraşdırma
 
@@ -34,14 +23,6 @@ bashcd frontend
 python -m http.server 8080
 # və ya sadəcə index.html-i brauzerə aç
 
-
-Qeyd: Frontend backend olmadan da işləyir — mock data avtomatik aktivləşir.
-
-
-
-🔗 API Endpointləri
-
-MetodURLTəsvirGET/api/statsAna səhifə statistikalarıGET/api/playersOyunçu siyahısı (filter)POST/api/players/:id/likeOyunçunu bəyənPOST/api/players/:id/skipOyunçunu keçGET/api/eventsEvent siyahısıPOST/api/eventsYeni event yaratPOST/api/events/:id/joinEvente qoşulGET/api/profileProfil məlumatlarıPUT/api/profileProfili yeniləPOST/api/setupİlk quraşdırma
 
 GET /api/players — Query Parametrləri
 
